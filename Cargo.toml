@@ -1,0 +1,39 @@
+[workspace]
+resolver = "2"
+members = ["gargears", "gargearsctl", "gargears-ipc"]
+
+[workspace.package]
+version = "0.1.0"
+edition = "2024"
+license = "MIT"
+authors = ["mfwolffe"]
+
+[workspace.dependencies]
+# Internal crates
+gargears-ipc = { path = "gargears-ipc" }
+gartk-core = { path = "../gartk/gartk-core" }
+gartk-x11 = { path = "../gartk/gartk-x11" }
+gartk-render = { path = "../gartk/gartk-render" }
+
+# CLI
+clap = { version = "4.5", features = ["derive"] }
+
+# Async
+tokio = { version = "1.0", features = ["full"] }
+
+# Serialization
+serde = { version = "1.0", features = ["derive"] }
+serde_json = "1.0"
+toml = "0.8"
+regex = "1.11"
+
+# Error handling
+thiserror = "2.0"
+anyhow = "1.0"
+
+# Logging
+tracing = "0.1"
+tracing-subscriber = { version = "0.3", features = ["env-filter"] }
+
+# X11 for blitting
+x11rb = { version = "0.13", features = ["allow-unsafe-code"] }
