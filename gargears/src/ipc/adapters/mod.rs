@@ -3,6 +3,7 @@
 mod gar;
 mod garbar;
 mod garbg;
+mod garcard;
 mod garclip;
 mod garfield;
 mod garlaunch;
@@ -15,6 +16,7 @@ mod gartray;
 pub use gar::{GarAdapter, GarKeybind, GarRule};
 pub use garbar::GarbarAdapter;
 pub use garbg::{GarbgAdapter, GarbgEvent};
+pub use garcard::GarcardAdapter;
 pub use garclip::GarclipAdapter;
 pub use garfield::GarfieldAdapter;
 pub use garlaunch::GarlaunchAdapter;

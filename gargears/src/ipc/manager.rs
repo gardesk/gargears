@@ -1,7 +1,7 @@
 //! Connection manager for coordinating IPC with all gardesk daemons
 
 use crate::ipc::adapters::{
-    GarbgAdapter, GarbgEvent, GarAdapter, GarbarAdapter, GarclipAdapter, GarfieldAdapter,
+    GarbgAdapter, GarbgEvent, GarcardAdapter, GarAdapter, GarbarAdapter, GarclipAdapter, GarfieldAdapter,
     GarlaunchAdapter, GarlockAdapter, GarnotifyAdapter, GarshotAdapter, GartermAdapter,
     GartrayAdapter,
 };
@@ -54,6 +54,7 @@ pub struct ConnectionManager {
     pub garclip: GarclipAdapter,
     pub garlaunch: GarlaunchAdapter,
     pub garnotify: GarnotifyAdapter,
+    pub garcard: GarcardAdapter,
 
     // Connection state
     connection_state: HashMap<Component, bool>,
@@ -77,6 +78,7 @@ impl ConnectionManager {
             garclip: GarclipAdapter::new(),
             garlaunch: GarlaunchAdapter::new(),
             garnotify: GarnotifyAdapter::new(),
+            garcard: GarcardAdapter::new(),
             connection_state: HashMap::new(),
             pending_events: Vec::new(),
         }
@@ -111,6 +113,7 @@ impl ConnectionManager {
             Component::Garclip => self.garclip.connect(),
             Component::Garlaunch => self.garlaunch.connect(),
             Component::Garnotify => self.garnotify.connect(),
+            Component::Garcard => self.garcard.connect(),
         };
 
         match &result {
@@ -147,6 +150,7 @@ impl ConnectionManager {
             Component::Garclip => self.garclip.disconnect(),
             Component::Garlaunch => self.garlaunch.disconnect(),
             Component::Garnotify => self.garnotify.disconnect(),
+            Component::Garcard => self.garcard.disconnect(),
         }
 
         self.connection_state.insert(component, false);
@@ -169,6 +173,7 @@ impl ConnectionManager {
             Component::Garclip => self.garclip.is_connected(),
             Component::Garlaunch => self.garlaunch.is_connected(),
             Component::Garnotify => self.garnotify.is_connected(),
+            Component::Garcard => self.garcard.is_connected(),
         }
     }
 
@@ -262,6 +267,7 @@ impl ConnectionManager {
             Component::Garclip => self.garclip.reconnect(),
             Component::Garlaunch => self.garlaunch.reconnect(),
             Component::Garnotify => self.garnotify.reconnect(),
+            Component::Garcard => self.garcard.reconnect(),
             // garterm uses different socket scheme, just try fresh connect
             Component::Garterm => self.garterm.connect(),
         }
@@ -280,6 +286,7 @@ impl ConnectionManager {
             Component::Garclip => self.garclip.should_reconnect(),
             Component::Garlaunch => self.garlaunch.should_reconnect(),
             Component::Garnotify => self.garnotify.should_reconnect(),
+            Component::Garcard => self.garcard.should_reconnect(),
             Component::Garterm => true, // Always allow garterm reconnect
         }
     }
@@ -297,6 +304,7 @@ impl ConnectionManager {
             Component::Garclip => self.garclip.reset_backoff(),
             Component::Garlaunch => self.garlaunch.reset_backoff(),
             Component::Garnotify => self.garnotify.reset_backoff(),
+            Component::Garcard => self.garcard.reset_backoff(),
             Component::Garterm => {} // garterm doesn't track backoff
         }
     }

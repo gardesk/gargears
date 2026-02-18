@@ -28,6 +28,7 @@ pub fn socket_path_for(component: Component) -> PathBuf {
         Component::Garclip => "garclip.sock",
         Component::Garlaunch => "garlaunch.sock",
         Component::Garnotify => "garnotify.sock",
+        Component::Garcard => "garcard.sock",
     };
 
     PathBuf::from(runtime_dir).join(socket_name)

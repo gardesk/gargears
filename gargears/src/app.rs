@@ -5,7 +5,7 @@ use crate::ipc::discovery::DaemonStatus;
 use crate::ipc::{ConnectionManager, IpcEvent};
 use crate::panels::{
     Component, GarPanel, GarbarPanel, GarbgPanel, GarclipPanel, GarfieldPanel, GarlaunchPanel,
-    GarlockPanel, GarnotifyPanel, GarshotPanel, GartermPanel, GartrayPanel,
+    GarlockPanel, GarnotifyPanel, GarshotPanel, GartermPanel, GartrayPanel, PlaceholderPanel,
 };
 use crate::ui::{Layout, Sidebar};
 use crate::ui::{Panel, PanelAction};
@@ -153,6 +153,14 @@ impl App {
             Component::Garnotify,
             Box::new(GarnotifyPanel::new(connection_manager.take_garnotify_adapter())),
         );
+        panels.insert(
+            Component::Garcard,
+            Box::new(PlaceholderPanel::new(
+                "garcard",
+                "Polkit authentication agent",
+                connection_manager.is_connected(Component::Garcard),
+            )),
+        );
 
         Ok(Self {
             window,
@@ -270,6 +278,14 @@ impl App {
         panels.insert(
             Component::Garnotify,
             Box::new(GarnotifyPanel::new(connection_manager.take_garnotify_adapter())),
+        );
+        panels.insert(
+            Component::Garcard,
+            Box::new(PlaceholderPanel::new(
+                "garcard",
+                "Polkit authentication agent",
+                connection_manager.is_connected(Component::Garcard),
+            )),
         );
 
         Ok(Self {

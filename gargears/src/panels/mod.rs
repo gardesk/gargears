@@ -42,6 +42,7 @@ pub enum Component {
     Garclip,
     Garlaunch,
     Garnotify,
+    Garcard,
 }
 
 impl Component {
@@ -59,6 +60,7 @@ impl Component {
             Component::Garclip,
             Component::Garlaunch,
             Component::Garnotify,
+            Component::Garcard,
         ]
     }
 
@@ -76,6 +78,7 @@ impl Component {
             Component::Garclip => "garclip",
             Component::Garlaunch => "garlaunch",
             Component::Garnotify => "garnotify",
+            Component::Garcard => "garcard",
         }
     }
 
@@ -93,6 +96,7 @@ impl Component {
             Component::Garclip => "Clipboard manager",
             Component::Garlaunch => "Application launcher",
             Component::Garnotify => "Notification daemon",
+            Component::Garcard => "Authentication agent",
         }
     }
 
@@ -110,6 +114,7 @@ impl Component {
             "garclip" => Some(Component::Garclip),
             "garlaunch" => Some(Component::Garlaunch),
             "garnotify" => Some(Component::Garnotify),
+            "garcard" => Some(Component::Garcard),
             _ => None,
         }
     }
