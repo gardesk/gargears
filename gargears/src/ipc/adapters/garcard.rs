@@ -1,10 +1,27 @@
 //! IPC adapter for garcard (authentication agent)
 
-use crate::ipc::client::IpcClient;
+use crate::ipc::client::{IpcClient, StandardResponse};
 use crate::ipc::discovery::socket_path_for;
 use crate::panels::Component;
 use anyhow::Result;
+use serde::Serialize;
+use serde_json::Value;
 use std::path::PathBuf;
+
+/// Commands for garcard daemon.
+#[derive(Debug, Serialize)]
+#[serde(tag = "command", rename_all = "snake_case")]
+enum GarcardCommand {
+    Ping,
+    Status,
+    Diagnose,
+    Version,
+    AuthSummary,
+    TempList,
+    TempRevoke { authorization_id: String },
+    TempRevokeAll,
+    Quit,
+}
 
 /// Adapter for garcard authentication agent
 pub struct GarcardAdapter {
@@ -48,6 +65,49 @@ impl GarcardAdapter {
 
     pub fn is_connected(&self) -> bool {
         self.client.is_connected()
+    }
+
+    fn send_command(&mut self, command: GarcardCommand) -> Result<Option<Value>> {
+        let response: StandardResponse = self.client.send_receive(&command)?;
+        response.into_result()
+    }
+
+    pub fn ping(&mut self) -> Result<Option<Value>> {
+        self.send_command(GarcardCommand::Ping)
+    }
+
+    pub fn status(&mut self) -> Result<Option<Value>> {
+        self.send_command(GarcardCommand::Status)
+    }
+
+    pub fn diagnose(&mut self) -> Result<Option<Value>> {
+        self.send_command(GarcardCommand::Diagnose)
+    }
+
+    pub fn version(&mut self) -> Result<Option<Value>> {
+        self.send_command(GarcardCommand::Version)
+    }
+
+    pub fn auth_summary(&mut self) -> Result<Option<Value>> {
+        self.send_command(GarcardCommand::AuthSummary)
+    }
+
+    pub fn temp_list(&mut self) -> Result<Option<Value>> {
+        self.send_command(GarcardCommand::TempList)
+    }
+
+    pub fn temp_revoke(&mut self, authorization_id: impl Into<String>) -> Result<Option<Value>> {
+        self.send_command(GarcardCommand::TempRevoke {
+            authorization_id: authorization_id.into(),
+        })
+    }
+
+    pub fn temp_revoke_all(&mut self) -> Result<Option<Value>> {
+        self.send_command(GarcardCommand::TempRevokeAll)
+    }
+
+    pub fn quit(&mut self) -> Result<Option<Value>> {
+        self.send_command(GarcardCommand::Quit)
     }
 }
 
