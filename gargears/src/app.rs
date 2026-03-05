@@ -57,8 +57,8 @@ impl App {
         // Connect to X11
         let conn = Connection::connect(None)?;
 
-        // Get monitor at pointer for centering
-        let monitor = gartk_x11::monitor_at_pointer(&conn)?;
+        // Get monitor of active window for centering
+        let monitor = gartk_x11::monitor_of_active_window(&conn)?;
 
         // Window size
         let width = 900;
@@ -188,8 +188,8 @@ impl App {
         // Connect to X11
         let conn = Connection::connect(None)?;
 
-        // Get monitor at pointer for centering
-        let monitor = gartk_x11::monitor_at_pointer(&conn)?;
+        // Get monitor of active window for centering
+        let monitor = gartk_x11::monitor_of_active_window(&conn)?;
 
         // Window size
         let width = 900;
